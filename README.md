@@ -15,7 +15,7 @@ The information is refreshed every 10 minutes.
 
 ## The example on Heroku
 
-[You can see the example on Heroku](https://todo.herokuapp.com/)
+[You can see the example on Heroku](https://boiling-shore-98332.herokuapp.com)
 
 ## Install virtual envaroment and requirements
 
