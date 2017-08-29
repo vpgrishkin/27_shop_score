@@ -11,6 +11,8 @@ Additional indicators:
 
 The information is refreshed every 10 minutes.
 
+The mobile-first approach is used - initially the page is put under the screen of the smartphone in width 320px, then the font size and indents are adapted under FullHD
+
 # How to use
 
 ## The example on Heroku
@@ -31,20 +33,20 @@ pip install -r requirements.txt
 ### Unix
 ``` #!bash
 
-DB_CONFIG = 'host={host} dbname={dbname} port={port} user={user} password={password}'
+DB_CONFIG = 'user:password@host:port/database'
 ```
 
 You should fill in:
 - `{host}` – database host address (defaults to UNIX socket if not provided);
-- `{dbname}` – the database name (database is a deprecated alias);
-- `{port}` – connection port number (defaults to 5432 if not provided); 
+- `{database}` – the database name (database is a deprecated alias);
+- `{port}` – connection port number (defaults to 5432 if not provided);
 - `{user}` – a user name;
 - `{password}` – a password.
 
 ### Windows
 ``` #!bash
 
-SET DB_CONFIG = 'host={host} dbname={dbname} port={port} user={user} password={password}'
+SET DB_CONFIG = 'user:password@host:port/database'
 ```
 
 ## Run local sever

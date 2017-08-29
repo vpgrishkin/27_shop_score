@@ -21,8 +21,7 @@
     <div class="container-fluid text-center">
       <div class="row dashboard">
         <div class="col-xs-12">
-          <h2>Максимальное время ожидания входящего запроса: <span id="order_waiting_time"></span></h2>
-          </br>
+          <h2 id="order_waiting_time">Максимальное время ожидания входящего запроса:</h2>
           <h4>Количество необработанных заказов: <span id="count_unconfirmed_orders"></span></h4>
           <h4>Всего заказов, обработанных за день: <span id="count_orders_processed_today"></span></h4>
         </div>
@@ -41,23 +40,23 @@
       function setDataFromJSON() {
         $.getJSON("/kpi.json")
         .done(function(data){
-           order_waiting_time = data['order_waiting_time']
-           if (order_waiting_time === 0){
-               $("#order_waiting_time").text('0 — все заказы обработаны');
-           } else if (Math.floor(order_waiting_time/60) === 0 ){
-               $("#order_waiting_time").text(order_waiting_time + ' сек.');
-           } else {
-               $("#order_waiting_time").text(Math.floor(order_waiting_time/60) + ' мин.');
-           }
-           if (Math.floor(order_waiting_time/60) < {{ YELLOW_INTERVAL }} ){
-               $(".dashboard").attr('class', "row dashboard bg-green");
-           } else if (Math.floor(order_waiting_time/60) >= {{ YELLOW_INTERVAL }} && Math.floor(order_waiting_time/60) < {{ RED_INTERVAL }} ){
-               $(".dashboard").attr('class', "row dashboard bg-yellow");
-           } else {
-               $(".dashboard").attr('class', "row dashboard bg-red");
-           }
-           $("#count_unconfirmed_orders").text(data['count_unconfirmed_orders']);
-           $("#count_orders_processed_today").text(data['count_orders_processed_today']);
+          order_waiting_time = data['order_waiting_time']
+          if (order_waiting_time === 0){
+            $("#order_waiting_time").text('Все заказы обработаны');
+          } else if (Math.floor(order_waiting_time/60) === 0 ){
+              $("#order_waiting_time").text(order_waiting_time + ' сек. – время ожидания');
+          } else {
+              $("#order_waiting_time").text(Math.floor(order_waiting_time/60) + ' мин. – время ожидания');
+          }
+          if (Math.floor(order_waiting_time/60) < {{ YELLOW_INTERVAL }} ){
+            $(".dashboard").attr('class', "row dashboard bg-green");
+          } else if (Math.floor(order_waiting_time/60) >= {{ YELLOW_INTERVAL }} && Math.floor(order_waiting_time/60) < {{ RED_INTERVAL }} ){
+              $(".dashboard").attr('class', "row dashboard bg-yellow");
+          } else {
+              $(".dashboard").attr('class', "row dashboard bg-red");
+          }
+          $("#count_unconfirmed_orders").text(data['count_unconfirmed_orders']);
+          $("#count_orders_processed_today").text(data['count_orders_processed_today']);
          })
         .fail(function(jqxhr, textStatus, error) {
           var err = textStatus + ", " + error;
