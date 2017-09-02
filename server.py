@@ -1,23 +1,16 @@
 import datetime
-import os
 
 from flask import Flask, render_template, jsonify, send_from_directory, request
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, Date, cast
+from sqlalchemy import cast, Date
+
+from model import session, Order
 
 
-DB_CONFIG = os.getenv("DB_CONFIG")
 DATA_REFRESH_INTERVAL = 10 * 1000
 RED_INTERVAL = 30
 YELLOW_INTERVAL = 7
 
 app = Flask(__name__)
-base = automap_base()
-engine = create_engine(DB_CONFIG)
-base.prepare(engine, reflect=True)
-orders = base.classes.orders
-session = Session(engine)
 
 
 @app.route('/')
@@ -57,21 +50,21 @@ def get_delta_from_now_in_sec(date):
 
 
 def fetch_nearest_unconfirmed_order_date():
-    nearest_unconfirmed_order = session.query(orders).filter(orders.confirmed.is_(None)).order_by(orders.created).first()
+    nearest_unconfirmed_order = session.query(Order).filter(Order.confirmed.is_(None)).order_by(Order.created).first()
     if nearest_unconfirmed_order:
         return nearest_unconfirmed_order.created
     return 0
 
 
 def fetch_count_unconfirmed_orders():
-    count_unconfirmed_orders = session.query(orders).filter(orders.confirmed.is_(None)).count()
+    count_unconfirmed_orders = session.query(Order).filter(Order.confirmed.is_(None)).count()
     if count_unconfirmed_orders:
         return count_unconfirmed_orders
     return 0
 
 
 def fetch_count_orders_processed_today():
-    count_orders_processed_today = session.query(orders).filter(cast(orders.confirmed, Date) == datetime.date.today()).count()
+    count_orders_processed_today = session.query(Order).filter(cast(Order.confirmed, Date) == datetime.date.today()).count()
     if count_orders_processed_today:
         return count_orders_processed_today
     return 0
@@ -85,4 +78,3 @@ def fetch_KPI(conn):
 
 if __name__ == "__main__":
     app.run()
-
