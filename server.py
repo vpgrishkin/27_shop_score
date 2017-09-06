@@ -43,10 +43,10 @@ def fetch_kpi_json():
 
 
 def get_delta_from_now_in_sec(date):
-        if date:
-            time_delta = datetime.datetime.now() - date
-            return time_delta.seconds
-        return 0
+    if date:
+        time_delta = datetime.datetime.now() - date
+        return time_delta.seconds
+    return 0
 
 
 def fetch_nearest_unconfirmed_order_date():
